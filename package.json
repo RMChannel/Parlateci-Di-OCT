@@ -1,7 +1,7 @@
 {
   "name": "parlatecidi",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "electron/main.js",
   "type": "module",
   "scripts": {
