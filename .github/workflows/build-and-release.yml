@@ -33,15 +33,31 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Incrementa la versione patch (es. 1.0.0 -> 1.0.1)
-          npm version patch -m "chore: bump version to %s [skip ci]"
+          # Controlla la versione del commit precedente
+          PREV_VERSION=$(git show HEAD~1:package.json 2>/dev/null | grep -E '"version"\s*:' | head -1 | awk -F '"' '{print $4}' || echo "none")
+          CURR_VERSION=$(node -p "require('./package.json').version")
           
-          # Estrae la nuova versione per passarla ai job successivi
-          NEW_VERSION=$(node -p "require('./package.json').version")
-          echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
-          
-          # Pusha il commit del bump e il relativo tag
-          git push origin HEAD:${{ github.ref_name }} --follow-tags
+          if [ "$PREV_VERSION" != "none" ] && [ "$PREV_VERSION" != "$CURR_VERSION" ]; then
+            echo "La versione è stata modificata manualmente ($PREV_VERSION -> $CURR_VERSION). Salto il bump automatico."
+            
+            # Crea e pusha solo il tag per questa versione
+            git tag "v$CURR_VERSION" || true
+            git push origin "v$CURR_VERSION" || true
+            
+            echo "tag=v$CURR_VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "La versione non è cambiata. Eseguo il bump automatico."
+            
+            # Incrementa la versione patch (es. 1.0.0 -> 1.0.1)
+            npm version patch -m "chore: bump version to %s [skip ci]"
+            
+            # Estrae la nuova versione per passarla ai job successivi
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            echo "tag=v$NEW_VERSION" >> $GITHUB_OUTPUT
+            
+            # Pusha il commit del bump e il relativo tag
+            git push origin HEAD:${{ github.ref_name }} --follow-tags
+          fi
 
   release:
     needs: bump-version
