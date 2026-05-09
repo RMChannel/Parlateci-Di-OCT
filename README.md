@@ -11,6 +11,20 @@
 
 Questa applicazione mira a semplificare l'estrazione degli stimoli visivi (fotografie), gestire le tempistiche della prova e tenere traccia delle diverse fasi dell'esposizione (scelta, lingua inglese, discussione).
 
+---
+
+#### 📸 Screenshot
+
+| Home Page - Griglia Foto | Estrazione in corso | Fase di Scelta |
+| :---: | :---: | :---: |
+| ![Home](images/1.png) | ![Shuffle](images/2.png) | ![Choice](images/3.png) |
+
+| Fase di Discussione | Warning Penalità |
+| :---: | :---: |
+| ![Discussion](images/4.png) | ![Warning](images/5.png) |
+
+---
+
 > [!WARNING]
 > **Copyright & Licenza:** Questo software è protetto da diritto d'autore (All Rights Reserved). Non è consentita la copia, distribuzione, modifica, o alcun uso commerciale o personale del codice senza esplicita autorizzazione. Il codice è pubblico esclusivamente a scopo di visualizzazione.
 
